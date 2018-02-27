@@ -1,6 +1,6 @@
 {
   "name": "db-migration-utils",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "dist/index.js",
   "repository": "git@github.com:neighborr/db-migration-utils.git",
   "author": "daviskoh <hello@daviskoh.com>",
