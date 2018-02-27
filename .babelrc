@@ -1,0 +1,14 @@
+{
+  "passPerPreset": true,
+  "presets": [
+    "env",
+    "stage-0"
+  ],
+  "ignore": [
+    "node_modules",
+    "dist",
+    "yarn.lock",
+    "package.json",
+    "README.md"
+  ]
+}

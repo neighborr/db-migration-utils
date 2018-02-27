@@ -1,0 +1,23 @@
+{
+  "name": "db-migration-utils",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "repository": "git@github.com:neighborr/db-migration-utils.git",
+  "author": "daviskoh <hello@daviskoh.com>",
+  "scripts": {
+    "build": "babel --ignore='**/__tests__' --out-dir='dist' **/*.js --debug && babel --ignore='**/__tests__' --out-dir='dist' *.js --debug",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.0.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-jest": "^20.0.3",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "jest": "^20.0.4"
+  }
+}
