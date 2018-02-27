@@ -8,7 +8,7 @@ module.exports = function (config) {
     endpoint: config.ENDPOINT || 'dynamodb.us-east-1.amazonaws.com'
   });
 
-  return function (TableName, next) {
+  return function checkTableStatus(TableName, next) {
     return new Promise(function (res, rej) {
       dynamodb.describeTable({ TableName: TableName }, function (err, data) {
         console.log('describing table');
@@ -19,16 +19,17 @@ module.exports = function (config) {
         }
 
         if (data.Table.TableStatus === 'ACTIVE') {
-          res();
-
           console.log('table is ACTIVE');
           console.log(data.Table);
           console.log('exiting');
-          return next();
+
+          next();
+          return res();
         }
 
         setTimeout(function () {
-          checkStatus(next);
+          console.log('TableStatus: ' + data.Table.TableStatus);
+          checkTableStatus(TableName, next).then(res).catch(rej);
         }, 3000);
       });
     });

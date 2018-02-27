@@ -8,28 +8,31 @@ module.exports = (config) => {
     endpoint: config.ENDPOINT || 'dynamodb.us-east-1.amazonaws.com',
   });
 
-  return (TableName, next) => new Promise((res, rej) => {
-    dynamodb.describeTable({TableName}, (err, data) => {
-      console.log('describing table');
+  return function checkTableStatus(TableName, next) {
+    return new Promise((res, rej) => {
+      dynamodb.describeTable({TableName}, (err, data) => {
+        console.log('describing table');
 
-      if (err) {
-        console.log('rejecting describeTable');
-        return rej(new Error(err));
-      }
+        if (err) {
+          console.log('rejecting describeTable');
+          return rej(new Error(err));
+        }
 
-      if (data.Table.TableStatus === 'ACTIVE') {
-        res();
+        if (data.Table.TableStatus === 'ACTIVE') {
+          console.log('table is ACTIVE');
+          console.log(data.Table);
+          console.log('exiting');
 
-        console.log('table is ACTIVE');
-        console.log(data.Table);
-        console.log('exiting');
-        return next();
-      }
+          next();
+          return res();
+        }
 
-      setTimeout(() => {
-        checkStatus(next);
-      }, 3000);
+        setTimeout(() => {
+          console.log(`TableStatus: ${data.Table.TableStatus}`);
+          checkTableStatus(TableName, next).then(res).catch(rej);
+        }, 3000);
+      });
     });
-  });
+  };
 };
 
