@@ -1,6 +1,6 @@
 {
   "name": "db-migration-utils",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "dist/index.js",
   "repository": "git@github.com:neighborr/db-migration-utils.git",
   "author": "daviskoh <hello@daviskoh.com>",
@@ -9,7 +9,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "aws-sdk": "^2.203.0"
+    "aws-sdk": "^2.203.0",
+    "bluebird": "^3.5.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

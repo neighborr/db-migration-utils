@@ -16,7 +16,7 @@ describe('checkTableStatus', () => {
     };
 
     mocks.describeTable = jest.fn((TableName, cb) => {
-      if (mocks.err) return cb(err);
+      if (mocks.err) return cb(mocks.err);
 
       cb(null, mocks.data);
     });
@@ -48,19 +48,9 @@ describe('checkTableStatus', () => {
     expect(call[0]).toEqual({TableName});
   });
 
-  it('signals that the migration is done', async () => {
-    const next = jest.fn();
-
-    const TableName = 'Comments';
-    await checkTableStatus(mocks.config)(TableName, next);
-
-    expect(next).toBeCalled();
-  });
-
   it('polls Dynamo until it is Active', async () => {
     mocks.data.Table.TableStatus = 'CREATING';
 
-    const next = jest.fn();
     const TableName = 'Messages';
 
     setTimeout(() => {
@@ -68,23 +58,23 @@ describe('checkTableStatus', () => {
       mocks.data.Table.TableStatus = 'ACTIVE';
     }, 0);
 
-    await checkTableStatus(mocks.config)(TableName, next);
+    await checkTableStatus(mocks.config)(TableName);
 
     expect(mocks.setTimeout.mock.calls.length).toBe(2);
-    expect(next).toBeCalled();
   });
 
   it('errors out correctly is check fails', async () => {
     const TableName = 'TerribleThings';
-    const next = jest.fn();
 
     mocks.err = {
+      code: '123',
+      name: 'YouSuckException',
       message: 'You suck. Here is an error',
     };
 
-    expect(checkTableStatus(mocks.config)(TableName, next))
+    expect(checkTableStatus(mocks.config)(TableName))
       .rejects
-      .toThrow();
+      .toEqual(mocks.err);
   });
 });
 
